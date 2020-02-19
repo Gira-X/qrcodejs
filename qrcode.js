@@ -70,9 +70,6 @@ var QRCode;
 	 * You need to make() the QRCode before calling this function!
 	 */
 	function patchPaddingIntoQRCode(qrCode, padding) {
-		let object = $.extend(true, {}, qrCode);
-		console.log(object);
-
 		qrCode.moduleCount += (padding * 2);
 		for (i = 0; i < padding; i++) {
 			qrCode.modules.unshift([]);
@@ -87,11 +84,8 @@ var QRCode;
 			}
 		}
 
-		console.log(qrCode);
 		return qrCode;
 	}
-
-
 
 	QR8bitByte.prototype = {
 		getLength: function (buffer) {
