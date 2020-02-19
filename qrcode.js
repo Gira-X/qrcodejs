@@ -64,6 +64,35 @@ var QRCode;
 		}
 	}
 
+	/**
+	 * There is probably a better to way to do this, but this works as well ;)
+	 *
+	 * You need to make() the QRCode before calling this function!
+	 */
+	function patchPaddingIntoQRCode(qrCode, padding) {
+		let object = $.extend(true, {}, qrCode);
+		console.log(object);
+
+		qrCode.moduleCount += (padding * 2);
+		for (i = 0; i < padding; i++) {
+			qrCode.modules.unshift([]);
+			qrCode.modules.push([]);
+		}
+
+		let nCount = qrCode.getModuleCount();
+		for (let row = 0; row < nCount; row++) {
+			for (i = 0; i < padding; i++) {
+				qrCode.modules[row].unshift(false);
+				qrCode.modules[row].push(false);
+			}
+		}
+
+		console.log(qrCode);
+		return qrCode;
+	}
+
+
+
 	QR8bitByte.prototype = {
 		getLength: function (buffer) {
 			return this.parsedData.length;
@@ -539,7 +568,8 @@ var QRCode;
 			typeNumber : 4,
 			colorDark : "#000000",
 			colorLight : "#ffffff",
-			correctLevel : QRErrorCorrectLevel.H
+			correctLevel : QRErrorCorrectLevel.H,
+			padding: 3
 		};
 		
 		if (typeof vOption === 'string') {
@@ -572,7 +602,7 @@ var QRCode;
 			this.makeCode(this._htOption.text);	
 		}
 	};
-	
+
 	/**
 	 * Make the QRCode
 	 * 
@@ -582,8 +612,10 @@ var QRCode;
 		this._oQRCode = new QRCodeModel(_getTypeNumber(sText, this._htOption.correctLevel), this._htOption.correctLevel);
 		this._oQRCode.addData(sText);
 		this._oQRCode.make();
+		patchPaddingIntoQRCode(this._oQRCode, this._htOption.padding);
+
 		this._el.title = sText;
-		this._oDrawing.draw(this._oQRCode);			
+		this._oDrawing.draw(this._oQRCode);
 		this.makeImage();
 	};
 	
