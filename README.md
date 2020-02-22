@@ -3,7 +3,7 @@ The padding are sized based on the real row/column block size.
 
 By default `padding: 3` is used.
 
-See `index.html` for an example with a padded QR code!
+See [index.html](https://gira-x.github.io/qrcodejs/index.html) for an example with a padded QR code!
 
 ```javascript
 let qrcode = new QRCode(document.getElementById("qrcode"), {
